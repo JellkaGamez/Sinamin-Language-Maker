@@ -1,0 +1,36 @@
+This text file contains a example of how to use this tool.
+
+Sinamin Superset Maker
+[WARNING] This program may use a lot of API calls!
+[WARNING] You have been warned!
+[INFO] This program takes a while to fully complete a Superset so please be patient!
+[INFO] Compilers will be written in python. You can find them in the current directory.
+[INPUT] Do you wish to continue? (Y/n): Y
+Very well. Staring up Sinamin Superset Maker!
+[INFO] Please fill in the required information!
+[INPUT] Superset name: Example
+[INPUT] Base language: Python
+[INPUT] Features (Comma Seperated): // are used for comments instead of #
+Your file format is: ".example"
+[WARNING] You will have to write some code in your own language!
+[INPUT] Please input a file from the "output" folder to continue... text.example
+[WARNING] File not found. Try again.
+[INPUT] Please input a file from the "output" folder to continue... test.example
+[INFO] Compiler saved as .example-compiler.py
+[INFO] Compilation successful
+[INPUT] Finished? (Y/n): Y
+
+Using the tool in this way produces the example you see in the output folder
+Let's break it down.
+
+First, we read some starting warnings and then type "Y" to continue
+Then, we put in some basic information about our "Example" language
+Lastly, we put in some code and get our compiler!
+
+Some supersets might be a bit more involved,
+if you type "n" into the "Finished?" question you get to
+- add more features
+- rate the compiler
+- provide errors with the output
+
+It's a nice tool and if you encounter a bug, report it to the github repo

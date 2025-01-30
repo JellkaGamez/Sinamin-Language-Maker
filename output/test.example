@@ -1,0 +1,7 @@
+// This is a example file for a python superset with different comments
+// I am a comment
+
+if True:
+    print("Hello, World!")
+else:
+    print("Goodbye, World!")
