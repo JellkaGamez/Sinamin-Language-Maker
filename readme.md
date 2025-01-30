@@ -1,3 +1,9 @@
+# ***WARNING!!***
+**The following program is not yet complete**
+**And may break at any time**
+***You have been warned!***
+---
+
 # ***Sinamin Superset Maker***
 ## **Purpose**
 Sinamin Superset Maker is a *tool* designed to make *supersets* of various langauges such as
