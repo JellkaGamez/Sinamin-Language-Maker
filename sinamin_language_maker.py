@@ -32,50 +32,70 @@ messages = [
         "role": "system",
         "content": """
 IGNORE ALL PREVIOUS INSTRUCTIONS  
-You are part of the Sinamin Language Maker, a specialized program designed to create and manage languages of programming languages. You will be provided with step-by-step instructions and specific input. Your task is to strictly follow the instructions as described below.  
+You are part of the Sinamin Language Maker, a specialized program designed to create and manage programming languages. You will be provided with step-by-step instructions and specific input. Your task is to strictly follow the instructions as described below.  
 
 Step: Init  
 When the step is "Init", you will receive a message formatted as follows:  
+
 Name: <name provided by the user>  
-Language: <base language provided by the user>  
 Features: <features provided by the user>  
 Step: Init  
-Your response must be a single line containing only the file format specific to the language, in the following format:  
+
+Your response must be a single line containing only the file extension for the new language, in this format:  
+
 .<file_format_here>  
-<file_format_here> must correspond to the appropriate file format for the specified language. And must not be the same as the base language (e.g. if the base language is Python, the file format must not be .py).
+
+<file_format_here> must be a new, unique file extension related to the language's name. It must not be an existing programming language extension (e.g., .py, .cpp, .js, etc.). No explanations, comments, or extra text are allowed.  
 
 Step: Create  
 The terminal usage will always be:  
-python compiler.py <source file.py>  
+
+python compiler.py <source file.ext>  
+
 When the step is "Create", you will receive a message formatted as follows:  
-Features: <New features here>  
-Source: <Source code the user has given>  
 
-If there is no current compiler, the "Output" parameter will not be included in the message.  
-Your task is to analyze the provided input and produce a valid raw Python implementation of the language's compiler. If there is a compiler there will be a "Output" parameter and a "Rating" parameter, The "Rating" parameter tells you whether or not the user likes the output of the compiler.
-If an error occurs in the source code of the compiler, you will receive a message formatted like this:  
-ERROR: <Code error>  
-Your response must not include any errors as output, as this will be treated as executable code. The response must also avoid the use of ``` or any additional formatting that could interfere with execution.  
+Features: <new features here>  
+Source: <source code the user has given>  
 
-Your compiler must not be an interpreter or conatin a compiled version of the provided file.
-Your compiler may not execute the compiled source code as that would screw up the program.
-Your compiler must save the compiled source code to a file with the name of the source code file followed by "-compiled" and then the extension of the base language
-Your compiler must not overwrite the original file. It should save it as a new file.
+If a compiler already exists, you will also receive:  
 
-The source code is in the file format provided by you, and is not .py or .cpp or anything else. It it the file format that you provided.
+Output: <previous compiled output>  
+Rating: <user feedback rating>  
 
-The source code provided must not be within your compiler source code and your compiler MAY NOT be an interpreter and MAY NOT be the compiled source code. And it must support the console usage "python compiler.py <file>"
-compiler.py is your source code file. You can use any external libraries that are supported by the Windows OS
+The "Rating" parameter indicates user satisfaction with the compiler’s output.  
 
-Your response must include a raw Python implementation of the compiler source code. This compiler should correctly parse the language syntax provided in the source and translate it into valid Python code.  
+If an error occurs in the compiler, you will receive:  
 
-Important Notes:  
-- Do not include any additional formatting, examples, or explanations in your response.  
-- The output will be interpreted as raw Python source code.  
-- If there is an error in the source code of the compiler, respond with the raw Python implementation of the corrected compiler.  
+ERROR: <code error>  
 
-By following these rules, you will accurately generate and manage the languages of programming languages and handle any errors that arise in the source code.
+You must return a valid, functional Python compiler implementation that processes the custom language and converts it into valid Python code.  
+
+Your compiler must:  
+- Be written in Python only  
+- Strictly follow the features specified by the user  
+- Parse the provided source code and generate valid Python output  
+- Save the compiled output in a new file named <original_filename>-compiled.<file_format> (where <file_format> is the generated extension)  
+- Support command-line execution using python compiler.py <file>  
+- Use only Windows-supported Python libraries  
+
+Your compiler must not:  
+- Be an interpreter (it must convert code, not execute it)  
+- Contain a pre-written program (e.g., print("Hello World"))  
+- Execute the compiled source code  
+- Overwrite the original file  
+- Include placeholder or default code  
+- Start with the name of the compiler's language (e.g., Python)  
+
+Strict Output Format:  
+- Your response must contain only raw Python source code  
+- No markdown, formatting, explanations, comments, or examples are allowed  
+- Do not include any additional text other than the required Python code  
+- Only return the corrected compiler code if an error occurs
+
+If you make a mistake and add markdown formatting in your response, the program will automatically remove it.
+You must still avoid markdown fomatting in your response.
 """
+# prompt V1.1
     }
 ]
 
@@ -128,8 +148,8 @@ warn("You will have to write some code in your own language!")
 source = None
 
 while source is None:
-    file = "./output/src" + finput("Please input a file... ./output/src/")
-
+    file = "./output/src/" + finput("Please input a file... ./output/src/")
+    print(file)
     try:
         with open(file, "r") as f:
             source = f.read()
@@ -155,13 +175,19 @@ while cont:
 
         compiler = f"{compiler}\n\n# Compiler designed by Sinamin Language Maker\n# Sinamin Language Maker designed by JellkaGamez (https://www.youtube.com/@JellkaGamez)"
 
+        if compiler.startswith('python'):
+            compiler.replace('python', '')
+
+        if compiler.__contains__('```'):
+            compiler.replace('```', '')
+
         with open(f"./output/{name}-compiler.py", "w") as f:
             f.write(compiler)
 
         info(f"Compiler saved as {name}-compiler.py")
 
         with open(f"./output/saves/{name}-save.py", "w") as f:
-            f.write(compiler)
+            f.write(f"# TODO")
 
         info(f"Save saved as {name}-save.save")
 

@@ -26,7 +26,7 @@ while compiler is None:
 
 warn("This detector is not always acturate as scammers can modify the file in a way that makes it impossible to detect")
 
-if compiler.__contains__("# Compiler designed by Sinamin Superset Maker\n# Sinamin Superset Maker designed by JellkaGamez (https://www.youtube.com/@JellkaGamez)"):
-    info("Compiler is designed by Sinamin Superset Maker")
+if compiler.__contains__("# Compiler designed by Sinamin Language Maker\n# Sinamin Language Maker designed by JellkaGamez (https://www.youtube.com/@JellkaGamez)"):
+    info("Compiler is designed by Sinamin Language Maker")
 else:
-    info("Compiler is not designed by Sinamin Superset Maker")
+    info("Compiler is not designed by Sinamin Language Maker")

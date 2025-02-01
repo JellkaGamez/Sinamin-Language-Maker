@@ -1,1 +1,0 @@
-language_info = {'name': 'Mamba', 'features': 'Simpler language, heavy focus on human readable syntax'}
