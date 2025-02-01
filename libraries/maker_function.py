@@ -118,14 +118,11 @@ def _get_message_():
 def load_save(save):
     save = None
 
-    save_file = None
-
     while save is None:
         file = "./output/saves/" + finput("Please input a save file... ./output/saves/")
         try:
             with open(file, "r") as f:
                 save = f.read()
-                save_file = file
         except FileNotFoundError:
             warn("File not found. Try again.")
         except Exception as e:
@@ -133,16 +130,7 @@ def load_save(save):
 
     save_JSON = json.loads(save)
 
-    language_info = save_JSON["language_info"]
-    messages = save_JSON["messages"]
-
-    source_file = save_JSON["source_code_file"]
-    with open(source_file, "r") as f:
-        source = f.read()
-    compiler_file = save_JSON["compiler_code_file"]
-
-    name = language_info["name"]
-    features = language_info["features"]
+    return save_JSON
 
 
 def init(language_name, features):
@@ -160,18 +148,17 @@ def load_source():
 
     source = None
 
-    source_file = None
-
     while source is None:
         file = "./output/src/" + finput("Please input a file... ./output/src/")
         try:
             with open(file, "r") as f:
                 source = f.read()
-                source_file = file
         except FileNotFoundError:
             warn("File not found. Try again.")
         except Exception as e:
             err(f"An error occurred: {e}. Try again.")
+
+    return source
 
 
 def init_create(name, language_info, source, compiler_file):
@@ -189,6 +176,7 @@ def create(name, language_info, source_file):
     error = "fake error"
 
     source = None
+
     with open(source_file, "r") as f:
         source = f.read()
 
@@ -243,6 +231,8 @@ def create(name, language_info, source_file):
             messages.append(
                 {"role": "user", "content": f"ERROR: {error}"}
             )
+
+    return result
 
 
 def continue_create(name, source, satisfaction, new_features, errors):
