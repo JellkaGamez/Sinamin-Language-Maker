@@ -1,3 +1,13 @@
+print("\033[33m[WARNING] " + "This is a TODO file. Exitting..." + "\033[0m")
+print("\033[33m[WARNING] " + "To see why please open the file and read the comments" + "\033[0m")
+
+# ================= TODO =================
+# Use the maker_function file to implement 
+# a gui interface
+# ========================================
+
+exit()
+
 from huggingface_hub import InferenceClient
 import curses, os, subprocess, json
 import PySimpleGUI as sg # type: ignore

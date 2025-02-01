@@ -1,13 +1,3 @@
-print("\033[33m[WARNING] " + "This is a TODO file. Exitting..." + "\033[0m")
-print("\033[33m[WARNING] " + "To see why please open the file and read the comments" + "\033[0m")
-
-# ================= TODO =================
-# Remove command-line based interface
-# Make it function based
-# ========================================
-
-exit()
-
 from huggingface_hub import InferenceClient
 import curses, os, subprocess, json
 
