@@ -1,3 +1,13 @@
+print("\033[33m[WARNING] " + "This is a TODO file. Exitting..." + "\033[0m")
+print("\033[33m[WARNING] " + "To see why please open the file and read the comments" + "\033[0m")
+
+# ================= TODO =================
+# Remove command-line based interface
+# Make it function based
+# ========================================
+
+exit()
+
 from huggingface_hub import InferenceClient
 import curses, os, subprocess, json
 
@@ -99,21 +109,7 @@ You must still avoid markdown fomatting in your response.
     }
 ]
 
-print("\033[33;1mSinamin Language Maker\033[0m")
-warn("This program may use a lot of API calls!")
-warn("You have been warned!")
-info("This program takes a while to fully complete a Language so please be patient!")
-info("Compilers will be written in python. You can find them in the output directory.")
-begin = finput("Do you wish to continue? (Y/n): ")
-
-if begin.lower() != "y":
-    exit()
-
-print("\033[0mVery well. Staring up \033[33;1mSinamin Language Maker\033[0m!")
-
-save = finput("Do you want to load a save? (Y/n): ")
-
-def get_message():
+def _get_message_():
     try:
         stream = client.chat.completions.create(
             model="Qwen/Qwen2.5-Coder-32B-Instruct", 
@@ -129,7 +125,7 @@ def get_message():
         err(f"An error occurred! {e}")
         return e
 
-if save.lower() == "y":
+def load_save(save):
     save = None
 
     save_file = None
@@ -158,24 +154,19 @@ if save.lower() == "y":
     name = language_info["name"]
     features = language_info["features"]
 
-else:
-    info("Please fill in the required information!")
 
-    name = finput("Language name: ")
-    features = finput("Features (Comma Seperated): ")
-
-    language_info = {'name': name, 'features': features}
-
-
+def init(language_name, features):
+    language_info = {'name': language_name, 'features': features}
 
     messages.append(
         {"role": "user", "content": f"Name: {language_info['name']}\nFeatures: {language_info['features']}\nStep: Init"}
     )
 
-    name = get_message().strip()
+    name = _get_message_().strip()
 
-    print("Your file format is: \"" + name + "\"")
-    warn("You will have to write some code in your own language!")
+    return name
+
+def load_source():
 
     source = None
 
@@ -192,21 +183,27 @@ else:
         except Exception as e:
             err(f"An error occurred: {e}. Try again.")
 
-messages.append(
-    {"role": "user", "content": f"Name: {name}\nLanguage: {language_info['name']}\nFeatures: {language_info['features']}\nStep: Create\nSource: {source}"}
-)
 
-if compiler_file:
-    with open(compiler_file, "r") as f:
-        compiler = f.read()
+def init_create(name, language_info, source, compiler_file):
+    messages.append(
+        {"role": "user", "content": f"Name: {name}\nLanguage: {language_info['name']}\nFeatures: {language_info['features']}\nStep: Create\nSource: {source}"}
+    )
 
-cont = True
-while cont:
+    if compiler_file:
+        with open(compiler_file, "r") as f:
+            compiler = f.read()
 
+    return compiler
+
+def create(name, language_info, source_file):
     error = "fake error"
 
+    source = None
+    with open(source_file, "r") as f:
+        source = f.read()
+
     while error is not None:
-        compiler = get_message()
+        compiler = _get_message_()
         compiler = compiler.replace("```", "")
         
         # Add a spesific line to the compiler
@@ -256,20 +253,15 @@ while cont:
             messages.append(
                 {"role": "user", "content": f"ERROR: {error}"}
             )
-    
-    finished = finput("Finished? (Y/n): ")
-
-    if finished.lower() == "y":
-        cont = False
 
 
-    if cont:
-        satisfaction = finput("Please rate the compiler (0-10): ")
+def continue_create(name, source, satisfaction, new_features, errors):
+    satisfaction = finput("Please rate the compiler (0-10): ")
 
-        new_features = finput("New features (Comma Seperated): ")
+    new_features = finput("New features (Comma Seperated): ")
 
-        errors = finput("Errors with output (Comma Seperated): ")
+    errors = finput("Errors with output (Comma Seperated): ")
 
-        messages.append(
-            {"role": "user", "content": f"File Format: {name}\nFeatures: {new_features}\nSource: {source}\nStep: Create\nErrors: {errors}\nRating: {satisfaction}"}
-        )
+    messages.append(
+        {"role": "user", "content": f"File Format: {name}\nFeatures: {new_features}\nSource: {source}\nStep: Create\nErrors: {errors}\nRating: {satisfaction}"}
+    )
