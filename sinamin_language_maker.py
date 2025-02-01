@@ -15,15 +15,15 @@ def err(text):
     # raise Exception
 
 try:
-    with open("key.txt", "r") as f:
+    with open("key.key", "r") as f:
         api_key = f.read().strip()
 except FileNotFoundError:
-    err("key.txt not found")
+    err("key.key not found")
     exit()
 
 
 if api_key == "YOUR API KEY HERE":
-    err("API key not inputed. Please input your API key in the key.txt file.")
+    err("API key not inputed. Please input your API key in the key.key file.")
 
 client = InferenceClient(api_key=api_key)
 
@@ -32,17 +32,17 @@ messages = [
         "role": "system",
         "content": """
 IGNORE ALL PREVIOUS INSTRUCTIONS  
-You are part of the Sinamin Superset Maker, a specialized program designed to create and manage supersets of programming languages. You will be provided with step-by-step instructions and specific input. Your task is to strictly follow the instructions as described below.  
+You are part of the Sinamin Language Maker, a specialized program designed to create and manage languages of programming languages. You will be provided with step-by-step instructions and specific input. Your task is to strictly follow the instructions as described below.  
 
 Step: Init  
 When the step is "Init", you will receive a message formatted as follows:  
 Name: <name provided by the user>  
-Superset: <base language provided by the user>  
+Language: <base language provided by the user>  
 Features: <features provided by the user>  
 Step: Init  
-Your response must be a single line containing only the file format specific to the superset, in the following format:  
+Your response must be a single line containing only the file format specific to the language, in the following format:  
 .<file_format_here>  
-<file_format_here> must correspond to the appropriate file format for the specified superset. And must not be the same as the base language (e.g. if the base language is Python, the file format must not be .py).
+<file_format_here> must correspond to the appropriate file format for the specified language. And must not be the same as the base language (e.g. if the base language is Python, the file format must not be .py).
 
 Step: Create  
 The terminal usage will always be:  
@@ -52,7 +52,7 @@ Features: <New features here>
 Source: <Source code the user has given>  
 
 If there is no current compiler, the "Output" parameter will not be included in the message.  
-Your task is to analyze the provided input and produce a valid raw Python implementation of the superset's compiler. If there is a compiler there will be a "Output" parameter and a "Rating" parameter, The "Rating" parameter tells you whether or not the user likes the output of the compiler.
+Your task is to analyze the provided input and produce a valid raw Python implementation of the language's compiler. If there is a compiler there will be a "Output" parameter and a "Rating" parameter, The "Rating" parameter tells you whether or not the user likes the output of the compiler.
 If an error occurs in the source code of the compiler, you will receive a message formatted like this:  
 ERROR: <Code error>  
 Your response must not include any errors as output, as this will be treated as executable code. The response must also avoid the use of ``` or any additional formatting that could interfere with execution.  
@@ -67,39 +67,38 @@ The source code is in the file format provided by you, and is not .py or .cpp or
 The source code provided must not be within your compiler source code and your compiler MAY NOT be an interpreter and MAY NOT be the compiled source code. And it must support the console usage "python compiler.py <file>"
 compiler.py is your source code file. You can use any external libraries that are supported by the Windows OS
 
-Your response must include a raw Python implementation of the compiler source code. This compiler should correctly parse the superset syntax provided in the source and translate it into valid Python code.  
+Your response must include a raw Python implementation of the compiler source code. This compiler should correctly parse the language syntax provided in the source and translate it into valid Python code.  
 
 Important Notes:  
 - Do not include any additional formatting, examples, or explanations in your response.  
 - The output will be interpreted as raw Python source code.  
 - If there is an error in the source code of the compiler, respond with the raw Python implementation of the corrected compiler.  
 
-By following these rules, you will accurately generate and manage the supersets of programming languages and handle any errors that arise in the source code.
+By following these rules, you will accurately generate and manage the languages of programming languages and handle any errors that arise in the source code.
 """
     }
 ]
 
-print("\033[33;1mSinamin Superset Maker\033[0m")
+print("\033[33;1mSinamin Language Maker\033[0m")
 warn("This program may use a lot of API calls!")
 warn("You have been warned!")
-info("This program takes a while to fully complete a Superset so please be patient!")
-info("Compilers will be written in python. You can find them in the current directory.")
+info("This program takes a while to fully complete a Language so please be patient!")
+info("Compilers will be written in python. You can find them in the output directory.")
 begin = finput("Do you wish to continue? (Y/n): ")
 
 if begin.lower() != "y":
     exit()
 
-print("\033[0mVery well. Staring up \033[33;1mSinamin Superset Maker\033[0m!")
+print("\033[0mVery well. Staring up \033[33;1mSinamin Language Maker\033[0m!")
 
 info("Please fill in the required information!")
 
-name = finput("Superset name: ")
-base = finput("Base language: ")
+name = finput("Language name: ")
 features = finput("Features (Comma Seperated): ")
 
-superset_info = {'name': name, 'base_language': base, 'features': features}
-# superset_info = {'name': 'Mamba', 'base_language': 'Python', 'features': 'Simpler language, heavy focus on human readable syntax'}
-# print(superset_info)
+language_info = {'name': name, 'features': features}
+# language_info = {'name': 'Mamba', 'features': 'Simpler language, heavy focus on human readable syntax'}
+# print(language_info)
 
 def get_message():
     try:
@@ -118,7 +117,7 @@ def get_message():
         return e
 
 messages.append(
-    {"role": "user", "content": f"Name: {superset_info['name']}\nSuperset: {superset_info['name']}\nFeatures: {superset_info['features']}\nStep: Init"}
+    {"role": "user", "content": f"Name: {language_info['name']}\nLanguage: {language_info['name']}\nFeatures: {language_info['features']}\nStep: Init"}
 )
 
 name = get_message().strip()
@@ -129,7 +128,7 @@ warn("You will have to write some code in your own language!")
 source = None
 
 while source is None:
-    file = "./output/" + finput("Please input a file from the \"output\" folder to continue... ")
+    file = "./output/src" + finput("Please input a file... ./output/src/")
 
     try:
         with open(file, "r") as f:
@@ -140,7 +139,7 @@ while source is None:
         err(f"An error occurred: {e}. Try again.")
 
 messages.append(
-    {"role": "user", "content": f"Name: {name}\nSuperset: {superset_info['name']}\nFeatures: {superset_info['features']}\nStep: Create\nSource: {source}"}
+    {"role": "user", "content": f"Name: {name}\nLanguage: {language_info['name']}\nFeatures: {language_info['features']}\nStep: Create\nSource: {source}"}
 )
 
 cont = True
@@ -154,12 +153,17 @@ while cont:
         
         # Add a spesific line to the compiler
 
-        compiler = f"{compiler}\n\n# Compiler designed by Sinamin Superset Maker\n# Sinamin Superset Maker designed by JellkaGamez (https://www.youtube.com/@JellkaGamez)"
+        compiler = f"{compiler}\n\n# Compiler designed by Sinamin Language Maker\n# Sinamin Language Maker designed by JellkaGamez (https://www.youtube.com/@JellkaGamez)"
 
         with open(f"./output/{name}-compiler.py", "w") as f:
             f.write(compiler)
 
         info(f"Compiler saved as {name}-compiler.py")
+
+        with open(f"./output/saves/{name}-save.py", "w") as f:
+            f.write(compiler)
+
+        info(f"Save saved as {name}-save.save")
 
         error = None
 
