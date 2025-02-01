@@ -21,10 +21,9 @@ for example lets say we had a language called *"Example"* with a compiler called
 
 ## **Other**
 Sinamin Language Maker will always produce compilers that look like this **.file_type-compiler.py**
-Support for compilation to other languages such as
+Support for compilation to other languages are being worked on, some languages that might be added are
 - C
 - C++
 - C#
 - Rust
 - Javascript
-are in the works!
