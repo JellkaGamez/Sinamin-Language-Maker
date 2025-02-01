@@ -27,3 +27,5 @@ Support for compilation to other languages are being worked on, some languages t
 - C#
 - Rust
 - Javascript
+
+I will occasionally develop this tool live on stream. (https://www.youtube.com/@JellkaGamez)
