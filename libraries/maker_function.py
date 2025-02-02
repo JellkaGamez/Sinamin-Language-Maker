@@ -116,17 +116,13 @@ def _get_message_():
         return e
 
 def load_save(save):
-    save = None
-
-    while save is None:
-        file = "./output/saves/" + finput("Please input a save file... ./output/saves/")
-        try:
-            with open(file, "r") as f:
-                save = f.read()
-        except FileNotFoundError:
-            warn("File not found. Try again.")
-        except Exception as e:
-            err(f"An error occurred: {e}. Try again.")
+    try:
+        with open(save, "r") as f:
+            save = f.read()
+    except FileNotFoundError:
+        warn("File not found. Try again.")
+    except Exception as e:
+        err(f"An error occurred: {e}. Try again.")
 
     save_JSON = json.loads(save)
 
