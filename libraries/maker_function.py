@@ -11,7 +11,7 @@ def info(text):
     print("\033[32m[INFO] " + text + "\033[0m")
 
 def err(text):
-    print("\033[31m[ERROR] " + text + "\033[0m")
+    print("\033[31m[ERROR] " + str(text) + "\033[0m")
     # raise Exception
 
 try:
@@ -62,7 +62,7 @@ If a compiler already exists, you will also receive:
 Output: <previous compiled output>  
 Rating: <user feedback rating>  
 
-The "Rating" parameter indicates user satisfaction with the compiler’s output.  
+The "Rating" parameter indicates user satisfaction with the compiler’s output. If you recive -1 it is a program error.
 
 If an error occurs in the compiler, you will receive:  
 
@@ -232,11 +232,11 @@ def create(name, language_info, source_file):
 
 
 def continue_create(name, source, satisfaction, new_features, errors):
-    satisfaction = finput("Please rate the compiler (0-10): ")
+    # satisfaction = finput("Please rate the compiler (0-10): ")
 
-    new_features = finput("New features (Comma Seperated): ")
+    # new_features = finput("New features (Comma Seperated): ")
 
-    errors = finput("Errors with output (Comma Seperated): ")
+    # errors = finput("Errors with output (Comma Seperated): ")
 
     messages.append(
         {"role": "user", "content": f"File Format: {name}\nFeatures: {new_features}\nSource: {source}\nStep: Create\nErrors: {errors}\nRating: {satisfaction}"}
